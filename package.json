@@ -13,6 +13,8 @@
     "lua-in-js": "^2.2.5"
   },
   "devDependencies": {
+    "html-inline-script-webpack-plugin": "^3.2.1",
+    "html-webpack-plugin": "^5.6.0",
     "webpack": "^5.93.0",
     "webpack-cli": "^5.1.4"
   }

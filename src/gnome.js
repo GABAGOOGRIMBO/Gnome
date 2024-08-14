@@ -1,6 +1,6 @@
 import RGB from "./rgb.js";
 
-class Gloomyz {
+class Gnome {
 	constructor(){
 		this.width=240;
 		this.height=180;
@@ -98,4 +98,4 @@ class Gloomyz {
 	draw() {}
 }
 
-export default Gloomyz
+export default Gnome

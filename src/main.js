@@ -1,10 +1,10 @@
 import * as luainjs from "lua-in-js";
-import Gloomyz from "/src/gloomyz.js";
+import Gnome from "/src/gnome.js";
 
 const luaEnv = luainjs.createEnv()
 luaEnv.parse("print('hallloooooo')").exec()
 
-class Main extends Gloomyz {
+class Main extends Gnome {
     constructor() {
         super();
     }
