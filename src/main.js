@@ -15,7 +15,6 @@ class Main extends Gnome {
 
     draw() {
         this.cls(this.RGB(0,0,0))
-        this.cam(0,0)
         this.color(this.RGB(255,0,0))
         this.rectFill(0,0,16,16)
         this.color(this.RGB(0,255,0))
@@ -23,4 +22,4 @@ class Main extends Gnome {
     }
 }
 
-new Main()
+window.onload = ()=>{new Main()}
