@@ -4,7 +4,7 @@ const path = require("path");
 
 const config = {
   mode: 'production',
-  entry: path.join(__dirname, './src/main.js'),
+  entry: path.join(__dirname, './src/gnome.js'),
   output: {
     path: path.join(__dirname, './dist'),
     filename: '[name].js'
