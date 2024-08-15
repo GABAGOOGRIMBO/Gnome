@@ -13,23 +13,19 @@ game.update = function()
 end
 
 game.draw = function()
+	
 end
 
 return game
 `;
 
-const luaEnv = luainjs.createEnv();
-var luaScript;
+var luaEnv; var luaScript;
 var canvas; var context;
 var loadBtn; var scrptInput;
-var curColor;
-var scrnBuffer;
-var offsetX; var offsetY;
-var width=240; var height=180;
-var gfxScale=3; //Multiplier for window resolution
-var fps=60;
 
 window.onload = ()=>{
+	luaEnv = luainjs.createEnv();
+	luaEnv.loadLib("gnome",new luainjs.Table(gnomeLib));
 	canvas=document.getElementById("output");
 	context=canvas.getContext("2d");
 	loadBtn=document.getElementById("loadButton");
@@ -37,6 +33,12 @@ window.onload = ()=>{
 	scrptInput=document.getElementById("script");
 	scrptInput.value=luaString;
 }
+
+var curColor; var scrnBuffer;
+var offsetX; var offsetY;
+var width=240; var height=180;
+var gfxScale=3; //Multiplier for window resolution
+var fps=60;
 
 function startGame() {
 	luaScript = luaEnv.parse(scrptInput.value).exec();
@@ -75,12 +77,12 @@ function tick() {
 }
 
 // Library stuff
-function cls(c=RGB(0,0,0)) { //Resets the buffer
+function cls() { //Resets the buffer
 	cam(0,0);
-	color(c);
+	color(rgb(0,0,0));
 	for (let y=0;y<height;y++) {
 		for (let x=0;x<width;x++) {
-			pset(x,y,c);
+			pset(x,y);
 		}
 	}
 }
