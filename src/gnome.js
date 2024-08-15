@@ -1,4 +1,4 @@
-import RGB from "./rgb.js";
+import rgb from "./rgb.js";
 import * as luainjs from "lua-in-js";
 import * as path from "path-browserify";
 import fs from '@zenfs/core'; // You can also use the named export, `fs`
@@ -7,7 +7,6 @@ const luaString = `
 local game = {}
 
 game.init = function()
-	print("lua executed correctly")
 end
 
 game.update = function()
@@ -22,6 +21,7 @@ return game
 const luaEnv = luainjs.createEnv();
 var luaScript;
 var canvas; var context;
+var loadBtn; var scrptInput;
 var curColor;
 var scrnBuffer;
 var offsetX; var offsetY;
@@ -32,21 +32,24 @@ var fps=60;
 window.onload = ()=>{
 	canvas=document.getElementById("output");
 	context=canvas.getContext("2d");
-	startGame();
+	loadBtn=document.getElementById("loadButton");
+	loadBtn.onclick=startGame
+	scrptInput=document.getElementById("script");
+	scrptInput.value=luaString;
 }
 
 function startGame() {
-	luaScript = luaEnv.parse(luaString).exec();
-	init = luaScript.init;
-	update = luaScript.update;
-	draw = luaScript.draw;
+	luaScript = luaEnv.parse(scrptInput.value).exec();
+	init = luaScript.strValues.init;
+	update = luaScript.strValues.update;
+	draw = luaScript.strValues.draw;
 	canvas.width=width*gfxScale
 	canvas.height=height*gfxScale
 
 	curColor=rgb(0,0,0)
 	offsetX=0 //Camera x offset
 	offsetY=0 //Camera y offset
-	var scrnBuffer=[] //2d array of the rgb values of the screen
+	scrnBuffer=[] //2d array of the rgb values of the screen
 	for (let y=0;y<height;y++) {
 		scrnBuffer[y]= [];
 		for (let x=0;x<width;x++) {
@@ -55,14 +58,14 @@ function startGame() {
 	}
 	console.log("Hello World");
 	init();
-	setInterval(tick(),1000/fps);
+	setInterval(tick,1000/fps);
 	console.log("interval set");
 }
 
 function tick() {
-	//update();
+	update();
 	context.clearRect(0, 0, canvas.width, canvas.height); //clears the canvas of the previous screen but does not reset the buffer
-	//draw();
+	draw();
 	for (let y=0;y<height;y++) { //Draw the buffer to the screen
 		for (let x=0;x<width;x++) {
 			context.fillStyle=scrnBuffer[y][x].toString(); //weird css conversion
@@ -71,7 +74,7 @@ function tick() {
 	}
 }
 
-// Drawing methods
+// Library stuff
 function cls(c=RGB(0,0,0)) { //Resets the buffer
 	cam(0,0);
 	color(c);
@@ -107,10 +110,6 @@ function pset(x,y) { //Sets a pixel to a color
 	if (x>=0 && x<width && y>=0 && y<height) {
 		scrnBuffer[y][x]=curColor;
 	}
-}
-
-function rgb(r,g,b) { //Shorthand for RGB
-	return new RGB(r,g,b);
 }
 
 function color(c) { //Sets the current color

@@ -10,4 +10,8 @@ class RGB {
     }
 }
 
-export default RGB;
+function rgb(r,g,b) {
+    return new RGB(r,g,b);
+}
+
+export default rgb;
