@@ -3,41 +3,58 @@ import * as luainjs from "lua-in-js";
 import * as path from "path-browserify";
 import fs from '@zenfs/core'; // You can also use the named export, `fs`
 
-const luaPath = "/dist/"
+const luaString = `
+local game = {}
+
+game.init = function()
+	print("lua executed correctly")
+end
+
+game.update = function()
+end
+
+game.draw = function()
+end
+
+return game
+`;
 
 const luaEnv = luainjs.createEnv();
-const luaScript = luaEnv.parse(fs.readFileSync('/dist/main.lua', 'utf-8'));
-const luaReturn = luaScript.exec();
-//const init = luaReturn.init;
-//const update = luaReturn.update;
-//const draw = luaReturn.draw;*/
-const canvas=document.createElement("canvas");
-const context=canvas.getContext("2d");
-
-var width=240;
-var height=180;
+var luaScript;
+var canvas; var context;
+var curColor;
+var scrnBuffer;
+var offsetX; var offsetY;
+var width=240; var height=180;
 var gfxScale=3; //Multiplier for window resolution
 var fps=60;
 
-canvas.width=width*gfxScale
-canvas.height=height*gfxScale
-
-var curColor=rgb(0,0,0)
-var offsetX=0 //Camera x offset
-var offsetY=0 //Camera y offset
-
-var scrnBuffer=[] //2d array of the rgb values of the screen
-for (let y=0;y<height;y++) {
-	scrnBuffer[y]= [];
-	for (let x=0;x<width;x++) {
-		scrnBuffer[y][x]= rgb(0,0,0);
-	}
+window.onload = ()=>{
+	canvas=document.getElementById("output");
+	context=canvas.getContext("2d");
+	startGame();
 }
 
-window.onload = ()=>{
+function startGame() {
+	luaScript = luaEnv.parse(luaString).exec();
+	init = luaScript.init;
+	update = luaScript.update;
+	draw = luaScript.draw;
+	canvas.width=width*gfxScale
+	canvas.height=height*gfxScale
+
+	curColor=rgb(0,0,0)
+	offsetX=0 //Camera x offset
+	offsetY=0 //Camera y offset
+	var scrnBuffer=[] //2d array of the rgb values of the screen
+	for (let y=0;y<height;y++) {
+		scrnBuffer[y]= [];
+		for (let x=0;x<width;x++) {
+			scrnBuffer[y][x]= rgb(0,0,0);
+		}
+	}
 	console.log("Hello World");
-	document.body.insertBefore(canvas,document.body.childNodes[0]);
-	//init();
+	init();
 	setInterval(tick(),1000/fps);
 	console.log("interval set");
 }
@@ -104,3 +121,7 @@ function cam(x,y) { //Offsets the cursor
 	offsetX=x;
 	offsetY=y;
 }
+
+function init() {}
+function update() {}
+function draw() {}
