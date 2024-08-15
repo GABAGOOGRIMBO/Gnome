@@ -1,9 +1,16 @@
 import RGB from "./rgb.js";
 import * as luainjs from "lua-in-js";
+import * as path from "path-browserify";
+import fs from '@zenfs/core'; // You can also use the named export, `fs`
+
+const luaPath = "/dist/"
 
 const luaEnv = luainjs.createEnv();
-const luaScript = luaEnv.parseFile("main.lua");
-//const update, draw = luaScript.exec();
+const luaScript = luaEnv.parse(fs.readFileSync('/dist/main.lua', 'utf-8'));
+const luaReturn = luaScript.exec();
+//const init = luaReturn.init;
+//const update = luaReturn.update;
+//const draw = luaReturn.draw;*/
 const canvas=document.createElement("canvas");
 const context=canvas.getContext("2d");
 
@@ -30,14 +37,15 @@ for (let y=0;y<height;y++) {
 window.onload = ()=>{
 	console.log("Hello World");
 	document.body.insertBefore(canvas,document.body.childNodes[0]);
+	//init();
 	setInterval(tick(),1000/fps);
 	console.log("interval set");
 }
 
 function tick() {
-	update();
+	//update();
 	context.clearRect(0, 0, canvas.width, canvas.height); //clears the canvas of the previous screen but does not reset the buffer
-	draw();
+	//draw();
 	for (let y=0;y<height;y++) { //Draw the buffer to the screen
 		for (let x=0;x<width;x++) {
 			context.fillStyle=scrnBuffer[y][x].toString(); //weird css conversion
@@ -96,7 +104,3 @@ function cam(x,y) { //Offsets the cursor
 	offsetX=x;
 	offsetY=y;
 }
-
-// Call backs
-function update() {}
-function draw() {}

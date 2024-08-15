@@ -3,7 +3,6 @@ const HtmlInlineScriptPlugin = require('html-inline-script-webpack-plugin');
 const path = require("path");
 
 const config = {
-  mode: 'production',
   entry: path.join(__dirname, './src/gnome.js'),
   output: {
     path: path.join(__dirname, './dist'),
