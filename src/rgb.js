@@ -6,7 +6,7 @@ class RGB {
     }
     
     toString(){
-        return "rgb("+this.r.toString()+" "+this.g.toString()+" "+this.b.toString()+")";
+        return "rgb("+this.r+" "+this.g+" "+this.b+")";
     }
 }
 

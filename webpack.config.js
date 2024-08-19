@@ -1,19 +1,13 @@
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const HtmlInlineScriptPlugin = require('html-inline-script-webpack-plugin');
 const path = require("path");
 
 const config = {
-  entry: path.join(__dirname, './src/main.js'),
+  entry: './src/main.js',
+  mode: 'none',
+  target: 'web',
   output: {
-    path: path.join(__dirname, './dist'),
-    filename: '[name].js'
+    path: path.resolve(__dirname, 'dist'),
+    filename: 'index.js'
   },
-  plugins: [
-    new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, './src/index.html')
-    }),
-    new HtmlInlineScriptPlugin(),
-  ]
 };
 
 module.exports = config
